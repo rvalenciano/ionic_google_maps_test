@@ -3,7 +3,7 @@
 // angular.module is a global place for creating, registering and retrieving Angular modules
 // 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
 // the 2nd parameter is an array of 'requires'
-angular.module('starter', ['ionic', 'ngCordova'])
+angular.module('starter', ['ionic', 'ngCordova', 'ion-datetime-picker'])
 
 .run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {
@@ -33,6 +33,11 @@ angular.module('starter', ['ionic', 'ngCordova'])
     url: '/map_route',
     templateUrl: 'templates/map_route.html',
     controller: 'MapRouteCtrl'
+  })
+  .state('schedule', {
+    url: '/schedule',
+    templateUrl: 'templates/schedule.html',
+    controller: 'ScheduleCtrl'
   });
 
   $urlRouterProvider.otherwise("/");
@@ -156,5 +161,14 @@ angular.module('starter', ['ionic', 'ngCordova'])
     console.log("Could not get location");
   });
 
+
+}).controller('ScheduleCtrl', function($scope, $state){
+  $scope.dateValue = new Date();
+  $scope.timeValue = new Date();
+  $scope.datetimeValue = new Date();
+
+  $scope.go = function() {
+    window.open("http://github.com/katemihalikova/ion-datetime-picker", "_blank");
+  };
 
 });
