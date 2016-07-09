@@ -148,9 +148,31 @@ angular.module('starter', ['ionic', 'ngCordova', 'ion-datetime-picker'])
           if (status == google.maps.DirectionsStatus.OK) {
               directionsDisplay.setDirections(response);
               directionsDisplay.setMap($scope.map);
-          } else {
-              alert("Directions Request from " + start.toUrlValue(6) + " to " + end.toUrlValue(6) + " failed: " + status);
-          }
+
+              var polyline = new google.maps.Polyline({
+                path: [],
+                strokeColor: '#FF0000',
+                strokeWeight: 3
+              });
+              var bounds = new google.maps.LatLngBounds();
+
+
+              var legs = response.routes[0].legs;
+              for (i = 0; i < legs.length; i++) {
+                var steps = legs[i].steps;
+                for (j = 0; j < steps.length; j++) {
+                  var nextSegment = steps[j].path;
+                  for (k = 0; k < nextSegment.length; k++) {
+                    polyline.getPath().push(nextSegment[k]);
+                    bounds.extend(nextSegment[k]);
+                  }
+                }
+              }
+              console.log(polyline.getPath().getArray().toString());
+              polyline.setMap($scope.map);
+                   } else {
+                       alert("Directions Request from " + start.toUrlValue(6) + " to " + end.toUrlValue(6) + " failed: " + status);
+                   }
       });
     }
     var getMarkerUniqueId= function(lat, lng) {
