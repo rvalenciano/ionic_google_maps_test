@@ -156,9 +156,12 @@ angular.module('starter', ['ionic', 'ngCordova', 'ion-datetime-picker'])
               });
               var bounds = new google.maps.LatLngBounds();
 
-
+              var total_distance = 0.0; //meters
+              var total_duration = 0; // seconds
               var legs = response.routes[0].legs;
               for (i = 0; i < legs.length; i++) {
+                total_distance = total_distance + legs[i].distance.value;
+                total_duration = total_duration + legs[i].duration.value;
                 var steps = legs[i].steps;
                 for (j = 0; j < steps.length; j++) {
                   var nextSegment = steps[j].path;
@@ -168,6 +171,8 @@ angular.module('starter', ['ionic', 'ngCordova', 'ion-datetime-picker'])
                   }
                 }
               }
+              console.log('Total Distance:' + total_distance / 1000 + ' km');
+              console.log('Total Duration:' + total_duration / 60 + ' minutes');
               console.log(polyline.getPath().getArray().toString());
               polyline.setMap($scope.map);
                    } else {
